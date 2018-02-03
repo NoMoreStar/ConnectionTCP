@@ -1,11 +1,20 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-
-
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.net.ConnectException;
 
+/**
+ *
+ * @author Sciarpetta Tiziano
+ */
 public class ClientConnessioneTCP {
     /**
      * @param args the command line arguments
@@ -17,11 +26,19 @@ public class ClientConnessioneTCP {
         String serverAddress = "localhost";
         //porta del server in ascolto
         int port = 2000;
+        DataOutputStream out = null;
+        DataInputStream in = null;
 
         //apertura della connessione al server sulla porta specificata
         try{
             connection = new Socket(serverAddress, port);
             System.out.println("Connessione aperta");
+            out = new DataOutputStream(connection.getOutputStream());
+            out.writeUTF("Dammi la data...");
+            out.flush();
+            
+            in = new DataInputStream(connection.getInputStream());
+                System.out.println("Data: "+ in.readUTF()); 
         }
         catch(ConnectException e){
             System.err.println("Server non disponibile!");
